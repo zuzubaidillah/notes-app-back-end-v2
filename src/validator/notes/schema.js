@@ -13,3 +13,12 @@ module.exports = { NotePayloadSchema };
 
 // pesan
 // Kita gunakan destructuring object untuk mengantisipasi pembuatan lebih dari satu nilai Schema yang di ekspor pada berkas ini ke depannya.
+// const Joi = require('joi');
+
+// const NotePayloadSchema = Joi.object({
+//     title: Joi.string().required(),
+//     body: Joi.string().required(),
+//     tags: Joi.array().items(Joi.string()).required(),
+// });
+
+// module.exports = { NotePayloadSchema };
