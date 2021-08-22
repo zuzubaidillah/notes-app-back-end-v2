@@ -3,6 +3,7 @@ const { Pool } = require("pg");
 const bcrypt = require('bcrypt');
 const InvariantError = require("../../exceptions/InvariantError");
 const NotFoundError = require("../../exceptions/NotFoundError");
+const AuthenticationError = require("../../exceptions/AuthenticationError");
 
 // buat class UsersService dan constructor yang menginisialisasi properti this._pool dengan nilai instance pg.Pool
 class UsersService {
@@ -60,6 +61,27 @@ class UsersService {
         }
         // kembalikan fungsi getUserById dengan nilai user yang didapat pada result.rows[0].
         return result.rows[0];
+    }
+
+    async verifyUserCredential(username, password) {
+        const query = {
+            text: 'SELECT id, password FROM users WHERE username = $1',
+            values: [username],
+        };
+        const result = await this._pool.query(query);
+
+        if (!result.rows.length) {
+            throw new AuthenticationError('Kredensial yang Anda berikan salah');
+        }
+        // Selanjutnya (jika result.rows.length tidak kosong), dapatkan id dan password dari result.rows[0]. Untuk nilai password, kita tampung ke variabel hashedPassword ya biar tidak ambigu dengan variabel password di parameter
+        const { id, password: hashedPassword } = result.rows[0];
+        const match = await bcrypt.compare(password, hashedPassword);
+
+        // Sekarang kita bisa evaluasi variabel match, jika hasilnya false, bangkitkan eror AuthenticationError dengan pesan ‘Kredensial yang Anda berikan salah’. Jika hasilnya true, kembalikan dengan nilai id user.
+        if (!match) {
+            throw new AuthenticationError('Kredensial yang Anda berikan salah');
+        }
+        return id;
     }
 }
 
