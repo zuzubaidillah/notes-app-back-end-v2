@@ -1,31 +1,15 @@
-// // berkas index.js akan fokus dalam membuat fungsi sebagai validator yang menggunakan schema dari schema.js
-// const InvariantError = require('../../exceptions/InvariantError');
-// const { NotePayloadSchema } = require('./schema');
+const { UserPayloadSchema } = require("./schema")
 
-// const NotesValidator = {
-//     // Fungsi validateNotePayload ini nantinya akan berguna untuk melakukan validasi dan mengevaluasi apakah validasi itu berhasil atau tidak.
-//     validateNotePayload: (payload) => {
-//         // kode validasi Joi dalam memvalidasi payload di dalam fungsi ini. Manfaatkan schema dari NotePayloadSchema yang sudah kita buat sebelumnya
-//         const validationResult = NotePayloadSchema.validate(payload);
+// fungsi validator
+// Fungsi validateUserPayload merupakan fungsi yang dibuat untuk memvalidasi data payload (dari parameternya) berdasarkan UserPayloadSchema yang sudah kita buat di schema.js. Bila objek payload tidak sesuai dengan skema yang sudah kita tetapkan, maka fungsi tersebut akan membangkitkan InvariantError.
+const UsersValidator = {
+    validateUserPayload: (payload) => {
+        const validationResult = UserPayloadSchema.validate(payload);
 
-//         // kita evaluasi validationResult. Jika properti error tidak undefined, maka kita bangkitkan error dengan membawa pesan dari properti validationResult.error.message
-//         if (validationResult.error) {
-//             throw new InvariantError(validationResult.error.message);
-//         }
-//     }
-// }
-
-// module.exports = NotesValidator;
-const { NotePayloadSchema } = require('./schema');
-const InvariantError = require('../../exceptions/InvariantError');
-
-const NotesValidator = {
-    validateNotePayload: (payload) => {
-        const validationResult = NotePayloadSchema.validate(payload);
         if (validationResult.error) {
             throw new InvariantError(validationResult.error.message);
         }
-    },
-};
+    }
+}
 
-module.exports = NotesValidator;
+module.exports = UsersValidator;
