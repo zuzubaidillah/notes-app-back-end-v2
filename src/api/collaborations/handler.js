@@ -86,3 +86,5 @@ class CollaborationsHandler {
         }
     }
 }
+
+module.exports = CollaborationsHandler;
