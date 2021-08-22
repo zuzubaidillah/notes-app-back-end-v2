@@ -1,4 +1,5 @@
-const { UserPayloadSchema } = require("./schema")
+const { UserPayloadSchema } = require("./schema");
+const InvariantError = require("../../exceptions/InvariantError");
 
 // fungsi validator
 // Fungsi validateUserPayload merupakan fungsi yang dibuat untuk memvalidasi data payload (dari parameternya) berdasarkan UserPayloadSchema yang sudah kita buat di schema.js. Bila objek payload tidak sesuai dengan skema yang sudah kita tetapkan, maka fungsi tersebut akan membangkitkan InvariantError.

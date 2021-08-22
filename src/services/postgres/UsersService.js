@@ -17,7 +17,7 @@ class UsersService {
 
         // TODO: Bila verifikasi lolos, maka masukkan user baru ke database.
         const id = `user-${nanoid(16)}`;
-        const hashedPassword = await bcrypt.has(password, 10); //fungsi bcrypt.hash menerima dua parameter, yakni data dan saltRounds
+        const hashedPassword = await bcrypt.hash(password, 10); //fungsi bcrypt.hash menerima dua parameter, yakni data dan saltRounds
 
         const query = {
             text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id',
