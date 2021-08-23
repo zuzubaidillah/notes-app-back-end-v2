@@ -1,3 +1,5 @@
+const ClientError = require("../../exceptions/ClientError");
+
 class CollaborationsHandler {
     constructor(collaborationsService, notesService, validator) {
         this._collaborationsService = collaborationsService;
@@ -16,7 +18,7 @@ class CollaborationsHandler {
             // Untuk memastikan hal itu, kita perlu verifikasi request.auth.credentials.id dan noteId yang berada di request.payload menggunakan fungsi this._notesService.verifyNoteOwner.
             const { id: credentialId } = request.auth.credentials;
             const { noteId, userId } = request.payload;
-            this._notesService.verifyNoteOwner(noteId, credentialId);
+            // this._notesService.verifyNoteOwner(noteId, credentialId);
 
             await this._notesService.verifyNoteOwner(noteId, credentialId);
             const collaborationId = await this._collaborationsService.addCollaboration(noteId, userId);

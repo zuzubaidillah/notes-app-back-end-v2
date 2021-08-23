@@ -10,9 +10,9 @@ const NotesService = require('./services/postgres/NotesService');
 const NotesValidator = require('./validator/notes');
 
 // users
+const users = require('./api/users');
 const UsersService = require('./services/postgres/UsersService');
 const UsersValidator = require('./validator/users');
-const users = require('./api/users');
 
 // authentications
 const authentications = require('./api/authentications');
@@ -26,10 +26,13 @@ const CollaborationsService = require('./services/postgres/CollaborationsService
 const CollaborationsValidator = require('./validator/collaborations');
 
 const init = async () => {
-  const notesService = new NotesService();
+  // Tetap pada berkas server.js. Karena sekarang NotesService memiliki dependency terhadap CollaborationsService, jadi kita harus memberikan instance CollaborationsService ketika membuat instance NotesService.
+  // Untuk melakukannya, pindahkan posisi pembuatan instance CollaborationsService, tepat sebelum pembuatan instance NotesService, dan lampirkan instance CollaborationsService ketika membuat instance NotesService.
+  const collaborationsService = new CollaborationsService();
+  const notesService = new NotesService(collaborationsService);
+  // const notesService = new NotesService();
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
-  const collaborationsService = new CollaborationsService();
 
 
   const server = Hapi.server({
