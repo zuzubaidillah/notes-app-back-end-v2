@@ -26,14 +26,11 @@ const CollaborationsService = require('./services/postgres/CollaborationsService
 const CollaborationsValidator = require('./validator/collaborations');
 
 const init = async () => {
-  // Tetap pada berkas server.js. Karena sekarang NotesService memiliki dependency terhadap CollaborationsService, jadi kita harus memberikan instance CollaborationsService ketika membuat instance NotesService.
-  // Untuk melakukannya, pindahkan posisi pembuatan instance CollaborationsService, tepat sebelum pembuatan instance NotesService, dan lampirkan instance CollaborationsService ketika membuat instance NotesService.
   const collaborationsService = new CollaborationsService();
   const notesService = new NotesService(collaborationsService);
   // const notesService = new NotesService();
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
-
 
   const server = Hapi.server({
     port: process.env.PORT,
@@ -41,6 +38,7 @@ const init = async () => {
     routes: {
       cors: {
         origin: ['*'],
+        additionalHeaders: ['x-requested-with'],
       },
     },
   });
@@ -69,7 +67,8 @@ const init = async () => {
     }),
   });
 
-  // ubah cara registrasi plugin notes dari objek literals menjadi arrays. Tujuannya, agar kita dapat mendaftarkan lebih dari satu plugin sekaligus
+  // ubah cara registrasi plugin notes dari objek literals menjadi arrays.
+  // Tujuannya, agar kita dapat mendaftarkan lebih dari satu plugin sekaligus
 
   await server.register([
     {
